@@ -22,6 +22,7 @@ type ageRatingCategoryInput struct {
 // @Produce json
 // @Success 200 {object} []models.AgeRatingCategory
 // @Router /age-rating-categories [get]
+
 func GetAllRating(c *gin.Context) {
     // get db from gin context
     db := c.MustGet("db").(*gorm.DB)
@@ -39,6 +40,8 @@ func GetAllRating(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} models.AgeRatingCategory
 // @Router /age-rating-categories [post]
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
 func CreateRating(c *gin.Context) {
     // Validate input
     var input ageRatingCategoryInput
@@ -105,6 +108,8 @@ func GetMoviesByRatingId(c *gin.Context) { // Get model if exist
 // @Param Body body ageRatingCategoryInput true "the body to update age rating category"
 // @Success 200 {object} models.AgeRatingCategory
 // @Router /age-rating-categories/{id} [patch]
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
 func UpdateRating(c *gin.Context) {
 
     db := c.MustGet("db").(*gorm.DB)
@@ -140,6 +145,8 @@ func UpdateRating(c *gin.Context) {
 // @Param id path string true "AgeRatingCategory id"
 // @Success 200 {object} map[string]boolean
 // @Router /age-rating-categories/{id} [delete]
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
 func DeleteRating(c *gin.Context) {
     // Get model if exist
     db := c.MustGet("db").(*gorm.DB)

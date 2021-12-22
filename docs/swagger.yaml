@@ -1,4 +1,27 @@
 definitions:
+  controllers.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  controllers.RegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
   controllers.ageRatingCategoryInput:
     properties:
       description:
@@ -54,20 +77,6 @@ info:
   termsOfService: http://swagger.io/terms/
 paths:
   /age-rating-categories:
-    get:
-      description: Get a list of AgeRatingCategory.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.AgeRatingCategory'
-            type: array
-      summary: Get all AgeRatingCategory.
-      tags:
-      - AgeRatingCategory
     post:
       description: Creating a new AgeRatingCategory.
       parameters:
@@ -77,6 +86,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.ageRatingCategoryInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -84,6 +98,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.AgeRatingCategory'
+      security:
+      - BearerToken: []
       summary: Create New AgeRatingCategory.
       tags:
       - AgeRatingCategory
@@ -96,6 +112,11 @@ paths:
         name: id
         required: true
         type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -105,6 +126,8 @@ paths:
             additionalProperties:
               type: boolean
             type: object
+      security:
+      - BearerToken: []
       summary: Delete one AgeRatingCategory.
       tags:
       - AgeRatingCategory
@@ -140,6 +163,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.ageRatingCategoryInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -147,6 +175,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.AgeRatingCategory'
+      security:
+      - BearerToken: []
       summary: Update AgeRatingCategory.
       tags:
       - AgeRatingCategory
@@ -171,6 +201,27 @@ paths:
       summary: Get Movies.
       tags:
       - AgeRatingCategory
+  /login:
+    post:
+      description: Logging in to get jwt token to access admin or user api by roles.
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login as as user.
+      tags:
+      - Auth
   /movie/{id}:
     delete:
       description: Delete a movie by id.
@@ -178,6 +229,11 @@ paths:
       - description: movie id
         in: path
         name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -189,6 +245,8 @@ paths:
             additionalProperties:
               type: boolean
             type: object
+      security:
+      - BearerToken: []
       summary: Delete one movie.
       tags:
       - Movie
@@ -216,6 +274,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.movieInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -223,6 +286,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Movie'
+      security:
+      - BearerToken: []
       summary: Create New Movie.
       tags:
       - Movie
@@ -259,6 +324,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.movieInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -266,7 +336,30 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Movie'
+      security:
+      - BearerToken: []
       summary: Update Movie.
       tags:
       - Movie
+  /register:
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a user.
+      tags:
+      - Auth
 swagger: "2.0"
