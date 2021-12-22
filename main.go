@@ -1,11 +1,14 @@
+
 package main
 
 import (
     "api-gin/config"
     "api-gin/docs"
     "api-gin/routes"
-	"github.com/joho/godotenv"
-	"log"
+    "api-gin/utils"
+    "log"
+
+    "github.com/joho/godotenv"
 )
 
 // @contact.name API Support
@@ -19,6 +22,7 @@ import (
 
 func main() {
     // for load godotenv
+    // for env
     err := godotenv.Load()
     if err != nil {
         log.Fatal("Error loading .env file")
@@ -28,15 +32,16 @@ func main() {
     docs.SwaggerInfo.Title = "Swagger Example API"
     docs.SwaggerInfo.Description = "This is a sample server Movie."
     docs.SwaggerInfo.Version = "1.0"
-    docs.SwaggerInfo.Host = "localhost:8080"
+    docs.SwaggerInfo.Host = utils.Getenv("SWAGGER_HOST", "localhost:8080")
     docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
     // database connection
-    db := config.ConnectDatabase()
+    db := config.ConnectDataBase()
     sqlDB, _ := db.DB()
     defer sqlDB.Close()
 
     // router
     r := routes.SetupRouter(db)
-    r.Run("localhost:8080")
+    // just remove port 8080
+    r.Run()
 }
